@@ -1,0 +1,8 @@
+# You should have a file like this (without the template extension) in your /config folder.
+# It must not be checked into source control.
+
+# Create your twitter app at https://dev.twitter.com/apps
+TWITTER_CONSUMER_KEY: CLASSIFIED
+TWITTER_CONSUMER_SECRET: CLASSIFIED
+TWITTER_ACCESS_TOKEN: CLASSIFIED
+TWITTER_ACCESS_SECRET: CLASSIFIED

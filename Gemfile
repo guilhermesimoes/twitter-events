@@ -5,6 +5,10 @@ ruby '2.0.0'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.0.1'
 
+gem 'twitter', '~> 5.0.0.rc.1'
+
+gem 'figaro', '~> 0.7.0'
+
 # Use sqlite3 as the database for Active Record
 gem 'sqlite3'
 
