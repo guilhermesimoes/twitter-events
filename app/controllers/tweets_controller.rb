@@ -18,7 +18,7 @@ class TweetsController < ApplicationController
 
     begin
       twitter_client.filter(conditions) do |tweet|
-        sse.write({:user => tweet.user.screen_name, :tweet => tweet.text}, {:event => "tweet"})
+        sse.write({:user => tweet.user.screen_name, :tweet => tweet.text})
         sleep 1
       end
     rescue IOError

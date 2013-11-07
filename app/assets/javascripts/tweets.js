@@ -9,10 +9,10 @@ TwitterEvents.tweets = {
     },
 
     addListeners: function() {
-        this.settings.source.addEventListener("tweet", function(event) {
+        this.settings.source.onmessage = function(event) {
             var data = JSON.parse(event.data);
             TwitterEvents.tweets.renderTweets(data);
-        });
+        };
     },
 
     renderTweets: function(data) {
