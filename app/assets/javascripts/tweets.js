@@ -11,29 +11,29 @@ TwitterEvents.tweets = {
     },
 
     addListeners: function() {
-        TwitterEvents.tweets.startTweets();
+        TwitterEvents.tweets.start();
     },
 
     bindUIActions: function() {
         this.settings.stopTweetsButton.on("click", function() {
-            TwitterEvents.tweets.stopTweets();
+            TwitterEvents.tweets.stop();
         });
     },
 
-    startTweets: function() {
+    start: function() {
         this.settings.source = new EventSource("/tweets");
-        this.settings.source.addEventListener("message", TwitterEvents.tweets.renderTweets);
+        this.settings.source.addEventListener("message", TwitterEvents.tweets.render);
     },
 
-    renderTweets: function(event) {
+    render: function(event) {
         var data = JSON.parse(event.data);
         console.log(data);
     },
 
-    stopTweets: function() {
+    stop: function() {
         var source = this.settings.source;
         source.close();
-        source.removeEventListener("message", TwitterEvents.tweets.renderTweets);
+        source.removeEventListener("message", TwitterEvents.tweets.render);
         this.settings.source = null;
     }
 
