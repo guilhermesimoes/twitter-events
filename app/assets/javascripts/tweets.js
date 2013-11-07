@@ -22,7 +22,7 @@ TwitterEvents.tweets = {
 
     startTweets: function() {
         this.settings.source = new EventSource("/tweets");
-        this.settings.source.onmessage = TwitterEvents.tweets.renderTweets;
+        this.settings.source.addEventListener("message", TwitterEvents.tweets.renderTweets);
     },
 
     renderTweets: function(event) {
@@ -31,7 +31,10 @@ TwitterEvents.tweets = {
     },
 
     stopTweets: function() {
-        this.settings.source.close();
+        var source = this.settings.source;
+        source.close();
+        source.removeEventListener("message", TwitterEvents.tweets.renderTweets);
+        this.settings.source = null;
     }
 
 }
