@@ -14,10 +14,15 @@ class TweetsController < ApplicationController
       # :track => topics.join(",")
     }
 
-    TWITTER.filter(conditions) do |tweet|
-      response.stream.write("#{tweet.user.screen_name} says:\n #{tweet.text}\n\n")
-      sleep 1
+    begin
+      TWITTER.filter(conditions) do |tweet|
+        response.stream.write("#{tweet.user.screen_name} says:\n #{tweet.text}\n\n")
+        sleep 1
+      end
+    rescue IOError
+      # When the client disconnects, we'll get an IOError on write
+    ensure
+      response.stream.close
     end
-    response.stream.close
   end
 end
