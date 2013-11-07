@@ -5,20 +5,16 @@ class TweetsController < ApplicationController
   include ActionController::Live
 
   def index
-    response.headers["Content-Type"] = "text/event-stream"
-    sse = SSE.new(response.stream)
-
-    # topics = %w(coffee tea)
-    # portugal_bounding_box_coordinates
+    twitter_client = TwitterClient.create
+    # Coordinates of Portugal's bounding box
     coordinates = %w(-9.580936 36.949892 -6.340828 41.983994)
-
     conditions = {
       :locations => coordinates.join(","),
       :language => "pt"
-      # :track => topics.join(",")
     }
 
-    twitter_client = TwitterClient.create
+    sse = SSE.new(response.stream)
+    response.headers["Content-Type"] = "text/event-stream"
 
     begin
       twitter_client.filter(conditions) do |tweet|
