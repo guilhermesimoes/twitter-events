@@ -1,3 +1,4 @@
+require 'twitter_client'
 require 'sse'
 
 class TweetsController < ApplicationController
@@ -17,8 +18,10 @@ class TweetsController < ApplicationController
       # :track => topics.join(",")
     }
 
+    twitter_client = TwitterClient.create
+
     begin
-      TWITTER.filter(conditions) do |tweet|
+      twitter_client.filter(conditions) do |tweet|
         sse.write({:user => tweet.user.screen_name, :tweet => tweet.text})
         sleep 1
       end
