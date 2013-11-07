@@ -122,6 +122,7 @@ DEPENDENCIES
   figaro (~> 0.7.0)
   jbuilder (~> 1.2)
   jquery-rails
+  json (~> 1.8.1)
   puma (~> 2.6.0)
   rails (= 4.0.1)
   sass-rails (~> 4.0.0)

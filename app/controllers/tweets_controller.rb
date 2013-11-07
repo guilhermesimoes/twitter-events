@@ -1,8 +1,11 @@
+require 'sse'
+
 class TweetsController < ApplicationController
   include ActionController::Live
 
   def index
     response.headers["Content-Type"] = "text/event-stream"
+    sse = SSE.new(response.stream)
 
     # topics = %w(coffee tea)
     # portugal_bounding_box_coordinates
@@ -16,13 +19,13 @@ class TweetsController < ApplicationController
 
     begin
       TWITTER.filter(conditions) do |tweet|
-        response.stream.write("#{tweet.user.screen_name} says:\n #{tweet.text}\n\n")
+        sse.write({:user => tweet.user.screen_name, :tweet => tweet.text})
         sleep 1
       end
     rescue IOError
       # When the client disconnects, we'll get an IOError on write
     ensure
-      response.stream.close
+      sse.close
     end
   end
 end
