@@ -1,11 +1,13 @@
 TwitterEvents.tweets = {
 
     settings: {
-        source: new EventSource("/tweets")
+        source: new EventSource("/tweets"),
+        stopTweetsButton: $("#js-stop-tweets")
     },
 
     init: function() {
         this.addListeners();
+        this.bindUIActions();
     },
 
     addListeners: function() {
@@ -15,8 +17,18 @@ TwitterEvents.tweets = {
         };
     },
 
+    bindUIActions: function() {
+        this.settings.stopTweetsButton.on("click", function() {
+            TwitterEvents.tweets.stopTweets();
+        });
+    },
+
     renderTweets: function(data) {
         console.log(data);
+    },
+
+    stopTweets: function() {
+        this.settings.source.close();
     }
 
 }
