@@ -12,4 +12,11 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require_tree .
+//= require setup
+//= require tweets
+
+(function() {
+
+    TwitterEvents.tweets.init();
+
+})();
