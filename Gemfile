@@ -9,8 +9,8 @@ gem 'twitter', '~> 5.0.0.rc.1'
 
 gem 'figaro', '~> 0.7.0'
 
-# Use sqlite3 as the database for Active Record
-gem 'sqlite3'
+# Use Postgres as the database for Active Record
+gem 'pg', '~> 0.17.0'
 
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.0'
