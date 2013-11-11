@@ -19,9 +19,7 @@ gem 'uglifier', '>= 1.3.0'
 
 gem 'jquery-rails'
 
-gem 'jbuilder', '~> 1.2'
-
-gem 'json', '~> 1.8.1'
+gem 'active_model_serializers', '~> 0.8.1'
 
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.

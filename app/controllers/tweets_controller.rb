@@ -18,8 +18,8 @@ class TweetsController < ApplicationController
 
     begin
       twitter_client.filter(conditions) do |tweet|
-        sse.write({:user => tweet.user.screen_name, :tweet => tweet.text})
-        sleep 1
+        serialized_tweet = TweetSerializer.new(TweetCreator.create(tweet))
+        sse.write(serialized_tweet)
       end
     rescue IOError
       # When the client disconnects, we'll get an IOError on write
