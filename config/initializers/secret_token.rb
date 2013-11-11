@@ -9,4 +9,4 @@
 
 # Make sure your secret_key_base is kept private
 # if you're sharing your code publicly.
-TwitterEvents::Application.config.secret_key_base = '36d1df25dd3a96ca8f36a16d592b54cc44b566caa01623515f84d85992cef25e689906335d52e8ea42cac5e8c3e9b994a55e482c055af1d5f85722f495cbf9bd'
+TwitterEvents::Application.config.secret_key_base = ENV['SECRET_TOKEN']
