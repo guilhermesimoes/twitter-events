@@ -6,18 +6,12 @@ class TweetsController < ApplicationController
 
   def index
     twitter_client = TwitterClient.create
-    # Coordinates of Portugal's bounding box
-    coordinates = %w(-9.580936 36.949892 -6.340828 41.983994)
-    conditions = {
-      :locations => coordinates.join(","),
-      :language => "pt"
-    }
 
     sse = SSE.new(response.stream)
     response.headers["Content-Type"] = "text/event-stream"
 
     begin
-      twitter_client.filter(conditions) do |tweet|
+      twitter_client.filter do |tweet|
         serialized_tweet = TweetSerializer.new(TweetCreator.create(tweet))
         sse.write(serialized_tweet)
       end
