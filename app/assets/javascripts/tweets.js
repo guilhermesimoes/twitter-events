@@ -15,12 +15,16 @@ TwitterEvents.tweets = {
     },
 
     bindUIActions: function() {
-        this.settings.stopTweetsButton.onclick = TwitterEvents.tweets.stop;
+        this.settings.stopTweetsButton.onclick = function() {
+            TwitterEvents.tweets.stop();
+        };
     },
 
     start: function() {
         this.settings.source = new EventSource("/tweets");
-        this.settings.source.addEventListener("message", TwitterEvents.tweets.render);
+        this.settings.source.addEventListener("message", function(event) {
+            TwitterEvents.tweets.render(event);
+        });
     },
 
     render: function(event) {
