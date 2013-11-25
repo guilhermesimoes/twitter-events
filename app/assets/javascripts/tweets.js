@@ -15,9 +15,7 @@ TwitterEvents.tweets = {
     },
 
     bindUIActions: function() {
-        this.settings.stopTweetsButton.onclick = function() {
-            TwitterEvents.tweets.stop();
-        };
+        this.settings.stopTweetsButton.onclick = TwitterEvents.tweets.stop;
     },
 
     start: function() {
