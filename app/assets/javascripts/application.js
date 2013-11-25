@@ -13,6 +13,7 @@
 //= require jquery
 //= require jquery_ujs
 //= require setup
+//= require handlebars-v1.1.2
 //= require tweets
 
 (function() {

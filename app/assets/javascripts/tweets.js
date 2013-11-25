@@ -2,7 +2,9 @@ TwitterEvents.tweets = {
 
     settings: {
         source: null,
-        stopTweetsButton: document.getElementById("js-stop-tweets")
+        container: document.getElementById("js-tweets"),
+        template: Handlebars.compile(document.getElementById("tweet-template").innerHTML),
+        stopButton: document.getElementById("js-stop-tweets")
     },
 
     init: function() {
@@ -15,7 +17,7 @@ TwitterEvents.tweets = {
     },
 
     bindUIActions: function() {
-        this.settings.stopTweetsButton.onclick = function() {
+        this.settings.stopButton.onclick = function() {
             TwitterEvents.tweets.stop();
         };
     },
@@ -28,8 +30,18 @@ TwitterEvents.tweets = {
     },
 
     render: function(event) {
-        var data = JSON.parse(event.data);
-        console.log(data);
+        var tweet = JSON.parse(event.data),
+            container = this.settings.container,
+            newNode = document.createElement("li"),
+            newNodeContent = this.settings.template({
+                id: tweet.id,
+                username: tweet.user.screen_name,
+                text: tweet.text
+            });
+
+        newNode.className = "tweet";
+        newNode.innerHTML = newNodeContent;
+        container.insertBefore(newNode, container.firstChild);
     },
 
     stop: function() {
