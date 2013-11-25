@@ -32,9 +32,11 @@ TwitterEvents.tweets = {
 
     stop: function() {
         var source = this.settings.source;
-        source.close();
-        source.removeEventListener("message", TwitterEvents.tweets.render);
-        this.settings.source = null;
+        if (source !== null) {
+            source.close();
+            source.removeEventListener("message", TwitterEvents.tweets.render);
+            this.settings.source = null;
+        }
     }
 
 }
