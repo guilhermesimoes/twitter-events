@@ -3,6 +3,7 @@ TwitterEvents.tweets = {
     settings: {
         source: null,
         container: document.getElementById("js-tweets"),
+        dummyNode: document.createElement("div"),
         template: Handlebars.compile(document.getElementById("tweet-template").innerHTML),
         stopButton: document.getElementById("js-stop-tweets")
     },
@@ -32,16 +33,16 @@ TwitterEvents.tweets = {
     render: function(event) {
         var tweet = JSON.parse(event.data),
             container = this.settings.container,
-            newNode = document.createElement("li"),
-            newNodeContent = this.settings.template({
+            dummyNode = this.settings.dummyNode,
+            newNode = this.settings.template({
                 id: tweet.id,
                 username: tweet.user.screen_name,
                 text: tweet.text
             });
 
-        newNode.className = "tweet";
-        newNode.innerHTML = newNodeContent;
-        container.insertBefore(newNode, container.firstChild);
+        dummyNode.innerHTML = newNode;
+        container.insertBefore(dummyNode.children[0], container.firstChild);
+        dummyNode.innerHTML = "";
     },
 
     stop: function() {

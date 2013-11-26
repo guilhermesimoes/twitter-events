@@ -3,11 +3,13 @@
 <ol id="js-tweets" class="tweets"></ol>
 
 <script id="tweet-template" type="text/x-handlebars-template">
-  <div class="tweet-header">
-    <a href="https://twitter.com/{{username}}" class="tweet-username">{{username}}</a>
-  </div>
-  <p class="tweet-text">{{text}}</p>
-  <div class="tweet-footer">
-    <a href="https://twitter.com/{{username}}/status/{{id}}" class="tweet-link">Tweet Link</a>
-  </div>
+  <li class="tweet">
+    <div class="tweet-header">
+      <a href="https://twitter.com/{{username}}" class="tweet-username">{{username}}</a>
+    </div>
+    <p class="tweet-text">{{text}}</p>
+    <div class="tweet-footer">
+      <a href="https://twitter.com/{{username}}/status/{{id}}" class="tweet-link">Tweet Link</a>
+    </div>
+  </li>
 </script>
