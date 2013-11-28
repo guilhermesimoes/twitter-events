@@ -1,7 +1,7 @@
-require 'portugal_client'
+require 'england_client'
 
 class TwitterClient
-  def self.create(client = PortugalClient)
+  def self.create(client = EnglandClient)
     @@client ||= client.new do |config|
       config.consumer_key        = ENV["TWITTER_CONSUMER_KEY"]
       config.consumer_secret     = ENV["TWITTER_CONSUMER_SECRET"]
