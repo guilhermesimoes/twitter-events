@@ -4,6 +4,6 @@ class TweetSerializer < ActiveModel::Serializer
   has_one :place
 
   def id
-    object.remote_id
+    object.twitter_id
   end
 end

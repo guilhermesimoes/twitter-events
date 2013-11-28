@@ -11,20 +11,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131110175253) do
+ActiveRecord::Schema.define(version: 20131128135048) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "places", force: true do |t|
-    t.string "remote_id"
+    t.string "woe_id"
     t.string "name"
     t.string "country"
     t.text   "bounding_box_coordinates", default: [], array: true
   end
 
   create_table "tweets", force: true do |t|
-    t.string   "remote_id"
+    t.string   "twitter_id"
     t.string   "text"
     t.datetime "created_at"
     t.text     "coordinates", default: [],              array: true
@@ -33,7 +33,7 @@ ActiveRecord::Schema.define(version: 20131110175253) do
   end
 
   create_table "users", force: true do |t|
-    t.string   "remote_id"
+    t.string   "twitter_id"
     t.string   "name"
     t.string   "screen_name"
     t.string   "description"

@@ -6,7 +6,7 @@ class TweetCreator
   end
 
   def self.find_or_initialize_user(user)
-    User.where(remote_id: user.attrs[:id_str]).first_or_initialize do |u|
+    User.where(twitter_id: user.attrs[:id_str]).first_or_initialize do |u|
       u.name = user.name
       u.screen_name = user.screen_name
       u.description = user.description
@@ -19,7 +19,7 @@ class TweetCreator
   end
 
   def self.find_or_initialize_place(place)
-    Place.where(remote_id: place.woe_id.to_s).first_or_initialize do |p|
+    Place.where(woe_id: place.woe_id.to_s).first_or_initialize do |p|
       p.name = place.name
       p.country = place.country
       p.bounding_box_coordinates = place.bounding_box.coordinates[0]
@@ -28,7 +28,7 @@ class TweetCreator
 
   def self.create_tweet(tweet, user, place)
     Tweet.create do |t|
-      t.remote_id = tweet.attrs[:id_str]
+      t.twitter_id = tweet.attrs[:id_str]
       t.text = tweet.text
       t.created_at = tweet.created_at
       t.coordinates = tweet.geo.coordinates if tweet.geo?

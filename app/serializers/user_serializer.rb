@@ -3,6 +3,6 @@ class UserSerializer < ActiveModel::Serializer
     :location, :followers_count, :created_at
 
   def id
-    object.remote_id
+    object.twitter_id
   end
 end
