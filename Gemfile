@@ -11,7 +11,7 @@ gem 'puma', '~> 2.6.0'
 
 gem 'figaro', '~> 0.7.0'
 
-gem 'twitter', '~> 5.0.0.rc.1'
+gem 'twitter', '5.1.1'
 
 gem 'sass-rails', '~> 4.0.0'
 

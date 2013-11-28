@@ -19,7 +19,7 @@ class TweetCreator
   end
 
   def self.find_or_initialize_place(place)
-    Place.where(remote_id: place.id.to_s).first_or_initialize do |p|
+    Place.where(remote_id: place.woe_id.to_s).first_or_initialize do |p|
       p.name = place.name
       p.country = place.country
       p.bounding_box_coordinates = place.bounding_box.coordinates[0]
