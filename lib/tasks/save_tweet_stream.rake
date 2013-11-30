@@ -8,7 +8,7 @@ task :save_tweet_stream => :environment do
   twitter_client.filter do |tweet|
 
     text = AnalyzedText.new(tweet.text, FootballTermsDetector)
-    if text.has_keywords? and text.has_entities?
+    if text.has_keywords? and text.has_relevant_entities?
       puts "#{tweet.text}\n#{tweet.uri}\n"
       p text.keywords
       p text.entities

@@ -20,6 +20,12 @@ describe "AnalyzedText" do
       analyzed_text.has_keywords?.must_equal true
     end
   end
+
+  describe "#has_relevant_entities?" do
+    it "must be true if a person is detected" do
+      analyzed_text.has_relevant_entities?.must_equal true
+    end
+  end
 end
 
 class MerkelDetector
