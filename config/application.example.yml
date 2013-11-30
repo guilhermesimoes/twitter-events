@@ -4,8 +4,19 @@
 # Generate a secret token with the `rake secret` command
 SECRET_TOKEN: CLASSIFIED
 
-# Create your twitter app at https://dev.twitter.com/apps
+# Create a twitter app at https://dev.twitter.com/apps
 TWITTER_CONSUMER_KEY: CLASSIFIED
 TWITTER_CONSUMER_SECRET: CLASSIFIED
 TWITTER_ACCESS_TOKEN: CLASSIFIED
 TWITTER_ACCESS_SECRET: CLASSIFIED
+
+# Install Java
+# (see supported versions at https://github.com/louismullie/stanford-core-nlp/#readme)
+# Point this path to where Java is installed
+JAVA_HOME: /usr/lib/jvm/java-7-oracle/
+
+# Download the Stanford Core NLP JAR and model files
+# (as per https://github.com/louismullie/stanford-core-nlp/#readme)
+# Place the contents of the extracted archive where you'd like
+# Point this path to that location
+STANFORD_CORE_NLP_JARS_PATH: /home/john/.../

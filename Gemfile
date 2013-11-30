@@ -13,6 +13,8 @@ gem 'figaro', '~> 0.7.0'
 
 gem 'twitter', '5.1.1'
 
+gem 'stanford-core-nlp', '0.5.1'
+
 gem 'sass-rails', '~> 4.0.0'
 
 gem 'uglifier', '>= 1.3.0'
