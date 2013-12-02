@@ -11,7 +11,8 @@ class TweetsController < ApplicationController
     response.headers["Content-Type"] = "text/event-stream"
 
     twitter_client.filter do |tweet|
-      serialized_tweet = TweetSerializer.new(TweetCreator.create(tweet))
+      tweet = TweetInitializer.create(tweet, { :save => true })
+      serialized_tweet = TweetSerializer.new(tweet)
       sse.write(serialized_tweet)
     end
   rescue IOError

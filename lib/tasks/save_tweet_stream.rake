@@ -13,7 +13,7 @@ task :save_tweet_stream => :environment do
       p text.keywords
       p text.entities
       puts ""
-      tweet = TweetCreator.create(tweet)
+      tweet = TweetInitializer.create(tweet)
       tweet.named_entities = text.named_entities
       tweet.tags = text.tags
       tweet.save

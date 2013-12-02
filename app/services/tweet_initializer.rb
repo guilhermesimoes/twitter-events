@@ -1,8 +1,10 @@
-class TweetCreator
-  def self.create(tweet)
+class TweetInitializer
+  def self.create(tweet, options = {})
     user = find_or_initialize_user(tweet.user)
     place = find_or_initialize_place(tweet.place)
-    create_tweet(tweet, user, place)
+    tweet = create_tweet(tweet, user, place)
+    tweet.save if options[:save]
+    tweet
   end
 
   def self.find_or_initialize_user(user)
@@ -27,7 +29,7 @@ class TweetCreator
   end
 
   def self.create_tweet(tweet, user, place)
-    Tweet.create do |t|
+    Tweet.new do |t|
       t.twitter_id = tweet.attrs[:id_str]
       t.text = tweet.text
       t.created_at = tweet.created_at
