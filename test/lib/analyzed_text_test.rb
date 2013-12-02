@@ -3,33 +3,32 @@ require "analyzed_text"
 
 describe "AnalyzedText" do
   let(:analyzed_text) do
-    AnalyzedText.new("Angela Merkel met Nicolas Sarkozy on January 25th in " \
-      "Berlin to discuss a new austerity package.",
-      MerkelDetector
-    )
+    AnalyzedText.new("Angela Merkel and Nicolas Sarkozy are politicians", NER)
   end
 
-  describe "#keywords" do
-    it "must find keywords using the injected detector" do
-      analyzed_text.keywords.must_equal ["Merkel"]
+  describe "#entities" do
+    it "must return named entities and tags identified by ner" do
+      analyzed_text.entities
+        .must_equal [["Angela Merkel", "Nicolas Sarkozy"], [:person, :person]]
     end
   end
 
-  describe "#has_keywords?" do
-    it "must be true if there are keywords" do
-      analyzed_text.has_keywords?.must_equal true
+  describe "#named_entities" do
+    it "must return only named entities identified by ner" do
+      analyzed_text.named_entities
+        .must_equal ["Angela Merkel", "Nicolas Sarkozy"]
     end
   end
 
-  describe "#has_relevant_entities?" do
-    it "must be true if a person is detected" do
-      analyzed_text.has_relevant_entities?.must_equal true
+  describe "#tags" do
+    it "must return only tags identified by ner" do
+      analyzed_text.tags.must_equal [:person, :person]
     end
   end
 end
 
-class MerkelDetector
-  def self.detect(text)
-    text.scan(/Merkel/)
+class NER
+  def self.recognize(text)
+    [["Angela Merkel", "Nicolas Sarkozy"], [:person, :person]]
   end
 end

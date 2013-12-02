@@ -1,25 +1,11 @@
 require "named_entity_recognizer"
 
 class AnalyzedText
-  RELEVANT_ENTITIES = [:person, :organization, :location, :date]
-  # :number, :ordinal, :cardinal, :quantity, :money, :percent, :o
+  attr_reader :text
 
-  def initialize(text, detector, ner = NamedEntityRecognizer)
+  def initialize(text, ner = NamedEntityRecognizer)
     @text = text
-    @detector = detector
     @ner = ner
-  end
-
-  def has_keywords?
-    !keywords.empty?
-  end
-
-  def keywords
-    @keywords ||= @detector.detect(@text)
-  end
-
-  def has_relevant_entities?
-    !(tags & RELEVANT_ENTITIES).empty?
   end
 
   def entities
