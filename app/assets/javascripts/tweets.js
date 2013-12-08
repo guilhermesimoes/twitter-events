@@ -5,6 +5,7 @@ TwitterEvents.tweets = {
         container: document.getElementById("js-tweets"),
         dummyNode: document.createElement("div"),
         template: Handlebars.compile(document.getElementById("tweet-template").innerHTML),
+        startButton: document.getElementById("js-start-tweets"),
         stopButton: document.getElementById("js-stop-tweets")
     },
 
@@ -14,10 +15,12 @@ TwitterEvents.tweets = {
     },
 
     addListeners: function() {
-        TwitterEvents.tweets.start();
     },
 
     bindUIActions: function() {
+        this.settings.startButton.onclick = function() {
+            TwitterEvents.tweets.start();
+        };
         this.settings.stopButton.onclick = function() {
             TwitterEvents.tweets.stop();
         };
