@@ -4,5 +4,5 @@ TwitterEvents::Application.routes.draw do
 
   root 'pages#welcome'
 
-  get 'tweets' => 'tweets#index'
+  get 'tweets/stream' => 'tweets#stream'
 end

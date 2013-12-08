@@ -4,7 +4,7 @@ require 'sse'
 class TweetsController < ApplicationController
   include ActionController::Live
 
-  def index
+  def stream
     twitter_client = TwitterClient.create
 
     sse = SSE.new(response.stream)

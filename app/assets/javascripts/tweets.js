@@ -24,7 +24,7 @@ TwitterEvents.tweets = {
     },
 
     start: function() {
-        this.settings.source = new EventSource("/tweets");
+        this.settings.source = new EventSource("/tweets/stream");
         this.settings.source.addEventListener("message", function(event) {
             TwitterEvents.tweets.render(event);
         });
