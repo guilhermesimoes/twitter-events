@@ -5,6 +5,7 @@ TwitterEvents.tweets = {
         container: document.getElementById("js-tweets"),
         dummyNode: document.createElement("div"),
         template: Handlebars.compile(document.getElementById("tweet-template").innerHTML),
+        searchForm: document.getElementById("js-search-form"),
         startButton: document.getElementById("js-start-tweets"),
         stopButton: document.getElementById("js-stop-tweets")
     },
@@ -15,6 +16,9 @@ TwitterEvents.tweets = {
     },
 
     addListeners: function() {
+        $(this.settings.searchForm).on('ajax:success', function(event, data, status, xhr) {
+            TwitterEvents.tweets.renderMultiple(data);
+        });
     },
 
     bindUIActions: function() {
@@ -29,13 +33,12 @@ TwitterEvents.tweets = {
     start: function() {
         this.settings.source = new EventSource("/tweets/stream");
         this.settings.source.addEventListener("message", function(event) {
-            TwitterEvents.tweets.render(event);
+            TwitterEvents.tweets.render(JSON.parse(event.data));
         });
     },
 
-    render: function(event) {
-        var tweet = JSON.parse(event.data),
-            container = this.settings.container,
+    render: function(tweet) {
+        var container = this.settings.container,
             dummyNode = this.settings.dummyNode,
             newNode = this.settings.template({
                 id: tweet.id,
@@ -46,6 +49,12 @@ TwitterEvents.tweets = {
         dummyNode.innerHTML = newNode;
         container.insertBefore(dummyNode.children[0], container.firstChild);
         dummyNode.innerHTML = "";
+    },
+
+    renderMultiple: function(tweets) {
+        $.each(tweets, function(index, tweet) {
+            TwitterEvents.tweets.render(tweet);
+        });
     },
 
     stop: function() {

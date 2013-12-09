@@ -1,4 +1,8 @@
 class Tweet < ActiveRecord::Base
+  searchable do
+    text :text
+  end
+
   belongs_to :user
   belongs_to :place
 

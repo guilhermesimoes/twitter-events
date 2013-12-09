@@ -4,6 +4,15 @@ require 'sse'
 class TweetsController < ApplicationController
   include ActionController::Live
 
+  def index
+    search = Tweet.search(:include => [:user, :place]) do
+      fulltext params[:search]
+
+      paginate :per_page => 25
+    end
+    render json: search.results
+  end
+
   def stream
     twitter_client = TwitterClient.create
 
