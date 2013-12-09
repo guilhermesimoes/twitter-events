@@ -6,11 +6,11 @@ class TweetsController < ApplicationController
 
   def index
     search = Tweet.search(:include => [:user, :place]) do
-      fulltext params[:search]
-
-      paginate :per_page => 25
+      fulltext params[:q]
+      paginate :page => params[:page]
+      order_by :created_at, :desc
     end
-    render json: search.results
+    render json: search.results, meta: { :last_page => search.results.last_page? }
   end
 
   def stream
@@ -20,7 +20,7 @@ class TweetsController < ApplicationController
     response.headers["Content-Type"] = "text/event-stream"
 
     twitter_client.filter do |tweet|
-      tweet = TweetInitializer.create(tweet, { :save => true })
+      tweet = TweetInitializer.create(tweet, { :save => false })
       serialized_tweet = TweetSerializer.new(tweet)
       sse.write(serialized_tweet)
     end

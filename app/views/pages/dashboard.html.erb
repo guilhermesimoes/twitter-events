@@ -1,25 +1,32 @@
 <%= form_tag tweets_path, :method => :get, :id => "js-search-form", :remote => true do %>
-  <%= text_field_tag :search %>
+  <%= text_field_tag :q  %>
+  <%= hidden_field_tag :page, 1, :id => "js-search-page" %>
   <%= submit_tag "Search", :name => nil %>
 <% end %>
 
-<%= button_tag "Start Tweets", :type => 'button', :id => "js-start-tweets" %>
-<%= button_tag "Stop Tweets", :type => 'button', :id => "js-stop-tweets" %>
+<%= button_tag "Start Stream", :type => 'button', :id => "js-start-stream" %>
+<%= button_tag "Stop Stream", :type => 'button', :id => "js-stop-stream" %>
 
-<ol id="js-tweets" class="tweets"></ol>
+<div class="stream">
+  <ol id="js-tweets" class="tweets"></ol>
 
-<script id="tweet-template" type="text/x-handlebars-template">
-  <li class="tweet">
-    <div class="tweet-header">
-      <a href="https://twitter.com/{{user.screen_name}}" target="_blank" class="account-link group">
-        <img src="{{user.image_url}}" class="avatar">
-        <strong class="name">{{user.name}}</strong>
-        <span class="username">{{user.screen_name}}</span>
-      </a>
-    </div>
-    <p class="tweet-text">{{text}}</p>
-    <div class="tweet-footer">
-      <a href="https://twitter.com/{{user.screen_name}}/status/{{id}}" target="_blank" class="tweet-link">Tweet Link</a>
-    </div>
-  </li>
-</script>
+  <script id="tweet-template" type="text/x-handlebars-template">
+    <li class="tweet">
+      <div class="tweet-header">
+        <a href="https://twitter.com/{{user.screen_name}}" target="_blank" class="account-link group">
+          <img src="{{user.image_url}}" class="avatar">
+          <strong class="name">{{user.name}}</strong>
+          <span class="username">{{user.screen_name}}</span>
+        </a>
+      </div>
+      <p class="tweet-text">{{text}}</p>
+      <div class="tweet-footer">
+        <a href="https://twitter.com/{{user.screen_name}}/status/{{id}}" target="_blank" class="tweet-link">Tweet Link</a>
+      </div>
+    </li>
+  </script>
+
+  <div id="js-stream-end" class="stream-end">
+    <h2 class="tweet stream-end-message">No more tweets</h2>
+  </div>
+</div>

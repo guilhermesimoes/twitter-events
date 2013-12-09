@@ -1,5 +1,5 @@
 # Disable for all serializers (except ArraySerializer)
-ActiveModel::Serializer.root = false
+# ActiveModel::Serializer.root = false
 
 # Disable for ArraySerializer
-ActiveModel::ArraySerializer.root = false
+# ActiveModel::ArraySerializer.root = false

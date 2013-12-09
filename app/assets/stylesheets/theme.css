@@ -1,6 +1,8 @@
 body {
   background-image: url('old_moon.png');
   color: #291D1D;
+  font-size: 18px;
+  font-family: 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif;
 }
 
 .group:after {
@@ -9,11 +11,15 @@ body {
   clear: both;
 }
 
-.tweets {
+.stream {
   max-width: 600px;
-  margin: 0 auto;
-  list-style-type: none;
+  margin: 10px auto 0 auto;
+}
+
+.tweets {
   padding: 0;
+  margin: 0;
+  list-style-type: none;
   border-width: 1px 1px 0 1px;
   border-style: solid;
   border-color: #999;
@@ -67,4 +73,16 @@ body {
 
 .tweet-link:hover {
   text-decoration: underline;
+}
+
+.stream-end {
+  padding-bottom: 100px;
+}
+
+.stream-end-message {
+  margin: 0;
+  text-align: center;
+  border-width: 0 1px 1px 1px;
+  border-style: solid;
+  border-color: #999;
 }

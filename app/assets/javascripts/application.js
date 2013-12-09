@@ -12,6 +12,7 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require jquery.endless-scroll-v1.8.0
 //= require setup
 //= require handlebars-v1.1.2
 //= require tweets

@@ -1,6 +1,7 @@
 class Tweet < ActiveRecord::Base
   searchable do
     text :text
+    time :created_at
   end
 
   belongs_to :user
