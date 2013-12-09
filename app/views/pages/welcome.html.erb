@@ -11,11 +11,15 @@
 <script id="tweet-template" type="text/x-handlebars-template">
   <li class="tweet">
     <div class="tweet-header">
-      <a href="https://twitter.com/{{username}}" class="tweet-username">{{username}}</a>
+      <a href="https://twitter.com/{{user.screen_name}}" target="_blank" class="account-link group">
+        <img src="{{user.image_url}}" class="avatar">
+        <strong class="name">{{user.name}}</strong>
+        <span class="username">{{user.screen_name}}</span>
+      </a>
     </div>
     <p class="tweet-text">{{text}}</p>
     <div class="tweet-footer">
-      <a href="https://twitter.com/{{username}}/status/{{id}}" class="tweet-link">Tweet Link</a>
+      <a href="https://twitter.com/{{user.screen_name}}/status/{{id}}" target="_blank" class="tweet-link">Tweet Link</a>
     </div>
   </li>
 </script>

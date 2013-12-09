@@ -40,11 +40,7 @@ TwitterEvents.tweets = {
     render: function(tweet) {
         var container = this.settings.container,
             dummyNode = this.settings.dummyNode,
-            newNode = this.settings.template({
-                id: tweet.id,
-                username: tweet.user.screen_name,
-                text: tweet.text
-            });
+            newNode = this.settings.template(tweet);
 
         dummyNode.innerHTML = newNode;
         container.insertBefore(dummyNode.children[0], container.firstChild);

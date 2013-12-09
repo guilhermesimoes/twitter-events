@@ -3,6 +3,12 @@ body {
   color: #291D1D;
 }
 
+.group:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
 .tweets {
   max-width: 600px;
   margin: 0 auto;
@@ -27,14 +33,22 @@ body {
   margin: 0 0 6px 0;
 }
 
-.tweet-username {
+.account-link {
   color: black;
   text-decoration: none;
-  font-weight: bold;
 }
 
-.tweet-username:hover {
+.account-link:hover .name {
   text-decoration: underline;
+}
+
+.avatar {
+  float: left;
+  margin-right: 8px;
+}
+
+.name {
+  display: block;
 }
 
 .tweet-text {
