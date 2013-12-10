@@ -1,11 +1,13 @@
-<%= form_tag tweets_path, :method => :get, :id => "js-search-form", :remote => true do %>
-  <%= text_field_tag :q  %>
-  <%= hidden_field_tag :page, 1, :id => "js-search-page" %>
-  <%= submit_tag "Search", :name => nil %>
-<% end %>
-
-<%= button_tag "Start Stream", :type => 'button', :id => "js-start-stream" %>
-<%= button_tag "Stop Stream", :type => 'button', :id => "js-stop-stream" %>
+<header class="main-header">
+  <%= button_tag "Start Stream", :type => 'button', :id => "js-start-stream", :class => "header-button" %>
+  <%= button_tag "Stop Stream", :type => 'button', :id => "js-stop-stream", :class => "header-button" %>
+  <%= button_tag "Classify", :type => 'button', :id => "js-classify", :class => "header-button" %>
+  <%= form_tag tweets_path, :method => :get, :remote => true, :id => "js-search-form", :class => "header-search-form" do %>
+    <%= text_field_tag :q, nil, :class => "header-input"  %>
+    <%= hidden_field_tag :page, 1, :id => "js-search-page" %>
+    <%= submit_tag "Search", :name => nil, :class => "header-button" %>
+  <% end %>
+</header>
 
 <div class="stream">
   <ol id="js-tweets" class="tweets"></ol>
@@ -21,12 +23,22 @@
       </div>
       <p class="tweet-text">{{text}}</p>
       <div class="tweet-footer">
-        <a href="https://twitter.com/{{user.screen_name}}/status/{{id}}" target="_blank" class="tweet-link">Tweet Link</a>
+        <a href="https://twitter.com/{{user.screen_name}}/status/{{twitter_id}}" target="_blank" class="tweet-link">Tweet Link</a>
       </div>
     </li>
   </script>
 
   <div id="js-stream-end" class="stream-end">
     <h2 class="tweet stream-end-message">No more tweets</h2>
+  </div>
+
+  <div id="js-classification-group" class="classification-group">
+    <%= form_tag classifications_path, :method => :post, :remote => true, :id => "js-classification-form", :class => "header-search-form" do %>
+      <%= hidden_field_tag :id, nil, :id => "js-tweet-id" %>
+      <%= hidden_field_tag "tweet[category]", nil, :id => "js-category" %>
+      <% Category.list.each do |category, id| %>
+        <%= button_tag category, :"data-id" => id, :name => nil, :class => "header-button js-category-button" %>
+      <% end %>
+    <% end %>
   </div>
 </div>

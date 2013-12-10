@@ -4,6 +4,8 @@ TwitterEvents::Application.routes.draw do
 
   root 'pages#dashboard'
 
+  resources :classifications, :only => [:new, :create]
+
   resources :tweets, :only => :index
 
   get 'tweets/stream' => 'tweets#stream'

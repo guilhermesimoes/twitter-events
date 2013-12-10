@@ -1,7 +1,3 @@
 class PlaceSerializer < ActiveModel::Serializer
-  attributes :id, :name, :country, :bounding_box_coordinates
-
-  def id
-    object.woe_id
-  end
+  attributes :id, :woe_id, :name, :country, :bounding_box_coordinates
 end
