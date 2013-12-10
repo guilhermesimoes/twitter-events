@@ -115,6 +115,8 @@ body {
 .avatar {
   float: left;
   margin-right: 8px;
+  width: 48px;
+  height: 48px;
 }
 
 .name {
@@ -127,12 +129,17 @@ body {
 
 .tweet-footer {
   padding-top: 5px;
+  font-size: 12px;
 }
 
 .tweet-link {
-  font-size: 12px;
   color: #999;
   text-decoration: none;
+}
+
+.tweet-time {
+  color: #999;
+  float: right;
 }
 
 .tweet-link:hover {
