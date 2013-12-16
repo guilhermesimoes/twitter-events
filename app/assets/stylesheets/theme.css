@@ -127,6 +127,11 @@ body {
   margin: 0;
 }
 
+.tweet-text em {
+  font-style: normal;
+  background-color: yellow;
+}
+
 .tweet-footer {
   padding-top: 5px;
   font-size: 12px;

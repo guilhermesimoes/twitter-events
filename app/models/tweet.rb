@@ -1,6 +1,6 @@
 class Tweet < ActiveRecord::Base
   searchable do
-    text :text
+    text :text, :stored => true
     time :created_at
   end
 
