@@ -5,11 +5,7 @@ class TweetsController < ApplicationController
   include ActionController::Live
 
   def index
-    search = Tweet.search(:include => [:user, :place]) do
-      fulltext params[:q]
-      paginate :page => params[:page]
-      order_by :created_at, :desc
-    end
+    search = TweetSearch.new(params[:q], params[:page]).search
     render json: search.results, meta: { :last_page => search.results.last_page? }
   end
 
