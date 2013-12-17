@@ -1,7 +1,7 @@
 require "test_helper"
 require "analyzed_text"
 
-describe "AnalyzedText" do
+describe AnalyzedText do
   let(:analyzed_text) do
     AnalyzedText.new("Angela Merkel and Nicolas Sarkozy are politicians", NER)
   end

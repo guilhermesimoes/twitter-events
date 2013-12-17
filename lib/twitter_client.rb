@@ -1,4 +1,4 @@
-require 'england_client'
+require "england_client"
 
 class TwitterClient
   def self.create(client = EnglandClient)

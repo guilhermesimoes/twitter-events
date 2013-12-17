@@ -1,5 +1,5 @@
-require 'twitter_client'
-require 'sse'
+require "twitter_client"
+require "sse"
 
 class TweetsController < ApplicationController
   include ActionController::Live

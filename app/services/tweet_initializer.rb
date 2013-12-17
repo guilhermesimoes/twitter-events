@@ -1,8 +1,8 @@
 class TweetInitializer
-  def self.create(tweet, options = {})
+  def self.init(tweet, analyzed_text, options = {})
     user = find_or_initialize_user(tweet.user)
     place = find_or_initialize_place(tweet.place)
-    tweet = create_tweet(tweet, user, place)
+    tweet = initialize_tweet(tweet, user, place, analyzed_text)
     tweet.save if options[:save]
     tweet
   end
@@ -28,7 +28,7 @@ class TweetInitializer
     end
   end
 
-  def self.create_tweet(tweet, user, place)
+  def self.initialize_tweet(tweet, user, place, analyzed_text)
     Tweet.new do |t|
       t.twitter_id = tweet.attrs[:id_str]
       t.text = tweet.text
@@ -36,6 +36,8 @@ class TweetInitializer
       t.coordinates = tweet.geo.coordinates if tweet.geo?
       t.user = user
       t.place = place
+      t.named_entities = analyzed_text.named_entities
+      t.tags = analyzed_text.tags
     end
   end
 end

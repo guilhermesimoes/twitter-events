@@ -19,4 +19,4 @@ JAVA_HOME: /usr/lib/jvm/java-7-oracle/
 # (as per https://github.com/louismullie/stanford-core-nlp/#readme)
 # Place the contents of the extracted archive where you'd like
 # Point this path to that location
-STANFORD_CORE_NLP_JARS_PATH: /home/john/.../
+STANFORD_CORE_NLP_JARS_PATH: /home/john/.../gems/stanford-core-nlp-0.5.1/bin/
