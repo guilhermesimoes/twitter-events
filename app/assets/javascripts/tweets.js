@@ -76,14 +76,13 @@ TwitterEvents.tweets = {
         this.settings.container.innerHTML = "";
         this.settings.container.style.display = "block";
         this.state.source = new EventSource("/tweets/stream");
-        this.state.source.addEventListener("message", function(event) {
-            TwitterEvents.tweets.renderStream(JSON.parse(event.data));
-        });
+        this.state.source.addEventListener("message", this.renderStream);
     },
 
-    renderStream: function(data) {
-        var container = this.settings.container,
-            newNode = this.settings.template(data.tweet);
+    renderStream: function(event) {
+        var data = JSON.parse(event.data),
+            container = TwitterEvents.tweets.settings.container,
+            newNode = TwitterEvents.tweets.settings.template(data.tweet);
 
         $(container).prepend(newNode);
     },
@@ -92,7 +91,7 @@ TwitterEvents.tweets = {
         var source = this.state.source;
         if (source !== null) {
             source.close();
-            source.removeEventListener("message", TwitterEvents.tweets.renderStream);
+            source.removeEventListener("message", this.renderStream);
             this.state.source = null;
         }
     },
