@@ -13,6 +13,8 @@ gem 'figaro', '~> 0.7.0'
 
 gem 'twitter', '5.1.1'
 
+gem 'ankusa', '0.1.0'
+
 gem 'stanford-core-nlp', '0.5.1'
 
 gem 'sunspot_rails', '~> 2.1.0'
