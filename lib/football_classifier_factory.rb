@@ -3,9 +3,9 @@ require "bayes_classifier"
 class FootballClassifierFactory
   MAX_TRAINING_EXAMPLES_PERCENTAGE = 0.9
 
-  def initialize
+  def initialize(classifier = BayesClassifier)
     @example_offset = 1
-    @classifier = BayesClassifier.new
+    @classifier = classifier.new
   end
 
   def create
