@@ -4,7 +4,7 @@ class NamedEntityRecognizer
   BACKGROUND_SYMBOL = :o
 
   def self.recognize(text)
-    pipeline = StanfordCoreNLP.load(:tokenize, :ssplit, :pos, :lemma, :ner)
+    pipeline
     annotations = StanfordCoreNLP::Annotation.new(text)
     pipeline.annotate(annotations)
 
@@ -12,6 +12,10 @@ class NamedEntityRecognizer
   end
 
   private
+
+  def self.pipeline
+    @pipeline ||= StanfordCoreNLP.load(:tokenize, :ssplit, :pos, :lemma, :ner)
+  end
 
   ##
   # Iterates the +tokens+ and returns an array of arrays.
