@@ -1,4 +1,7 @@
 require "twitter_client"
+require "analyzed_text"
+require "football_filter"
+require "football_classifier_factory"
 require "sse"
 
 class TweetsController < ApplicationController
@@ -10,15 +13,27 @@ class TweetsController < ApplicationController
   end
 
   def stream
+    classifier = FootballClassifierFactory.new.create
+
     twitter_client = TwitterClient.create
 
     sse = SSE.new(response.stream)
     response.headers["Content-Type"] = "text/event-stream"
 
     twitter_client.filter do |tweet|
-      tweet = TweetInitializer.create(tweet, { :save => false })
-      serialized_tweet = TweetSerializer.new(tweet)
-      sse.write(serialized_tweet)
+
+      analyzed_text = AnalyzedText.new(tweet.text)
+      if FootballFilter.new(analyzed_text).ok? && classifier.classify(tweet.text) == :match
+        tweet = TweetInitializer.init(tweet, analyzed_text, { :save => false })
+        serialized_tweet = TweetSerializer.new(tweet)
+        sse.write(serialized_tweet)
+      else
+        if analyzed_text.tags.size > 1
+          puts "NOPE: #{tweet.text}\n"
+        else
+          puts "."
+        end
+      end
     end
   rescue IOError
     # When the client disconnects, we'll get an IOError on write
