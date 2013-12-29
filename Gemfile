@@ -13,6 +13,8 @@ gem 'figaro', '~> 0.7.0'
 
 gem 'twitter', '5.1.1'
 
+gem 'chronic', '0.10.2'
+
 gem 'ankusa', '0.1.0'
 
 gem 'stanford-core-nlp', '0.5.1'
@@ -31,6 +33,10 @@ gem 'active_model_serializers', '~> 0.8.1'
 
 group :development do
   gem 'progress_bar', '~> 1.0'
+end
+
+group :test do
+  gem 'timecop', '~> 0.7.0'
 end
 
 group :doc do
