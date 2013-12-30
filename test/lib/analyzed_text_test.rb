@@ -2,7 +2,7 @@ require "test_helper"
 require "analyzed_text"
 
 describe AnalyzedText do
-  describe "named entities recognizer attributes" do
+  describe "ner attributes" do
     before do
       @analyzed_text = AnalyzedText.new(
         "Angela Merkel and Nicolas Sarkozy are politicians",
@@ -11,19 +11,19 @@ describe AnalyzedText do
     end
 
     describe "#entities" do
-      it "must return named entities and tags identified by ner" do
+      it "must return named entities and tags identified by the ner" do
         @analyzed_text.entities.must_equal [["Angela Merkel", "Nicolas Sarkozy"], [:person, :person]]
       end
     end
 
     describe "#named_entities" do
-      it "must return only named entities identified by ner" do
+      it "must return the identified named entities" do
         @analyzed_text.named_entities.must_equal ["Angela Merkel", "Nicolas Sarkozy"]
       end
     end
 
     describe "#tags" do
-      it "must return only tags identified by ner" do
+      it "must return the tags of identified named entities" do
         @analyzed_text.tags.must_equal [:person, :person]
       end
     end
