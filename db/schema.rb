@@ -11,10 +11,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131209215603) do
+ActiveRecord::Schema.define(version: 20131217150000) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "events", force: true do |t|
+    t.tstzrange "started_at"
+    t.tstzrange "finished_at"
+    t.string    "locations",        default: [], array: true
+    t.string    "actors",           default: [], array: true
+    t.string    "description"
+    t.string    "category"
+    t.integer   "references_count", default: 0
+  end
+
+  add_index "events", ["finished_at"], name: "index_events_on_finished_at", using: :gist
+  add_index "events", ["started_at"], name: "index_events_on_started_at", using: :gist
 
   create_table "places", force: true do |t|
     t.string "woe_id"
@@ -22,6 +35,15 @@ ActiveRecord::Schema.define(version: 20131209215603) do
     t.string "country"
     t.text   "bounding_box_coordinates", default: [], array: true
   end
+
+  create_table "references", force: true do |t|
+    t.integer "tweet_id",  null: false
+    t.integer "event_id",  null: false
+    t.integer "certainty"
+  end
+
+  add_index "references", ["event_id"], name: "index_references_on_event_id", using: :btree
+  add_index "references", ["tweet_id"], name: "index_references_on_tweet_id", using: :btree
 
   create_table "tweets", force: true do |t|
     t.string   "twitter_id"
