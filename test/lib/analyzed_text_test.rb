@@ -27,6 +27,12 @@ describe AnalyzedText do
         @analyzed_text.tags.must_equal [:person, :person]
       end
     end
+
+    describe "#named_entities_with_tag" do
+      it "must return entities tagged with the given tag" do
+        @analyzed_text.named_entities_with_tag(:person).must_equal ["Angela Merkel", "Nicolas Sarkozy"]
+      end
+    end
   end
 
   describe "time parser dates" do

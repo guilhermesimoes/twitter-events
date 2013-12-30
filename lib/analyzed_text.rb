@@ -30,12 +30,16 @@ class AnalyzedText
     @date_ranges ||= time_mentions.map { |time_mention| @time_parser.get_date_ranges(time_mention) }
   end
 
+  def named_entities_with_tag(tag)
+    named_entities.each_index.reduce([]) do |result, index|
+      result << named_entities[index] if tags[index] == tag
+      result
+    end
+  end
+
   private
 
   def time_mentions
-    named_entities.each_index.reduce([]) do |result, index|
-      result << named_entities[index] if tags[index] == :date
-      result
-    end
+    @time_mentions ||= named_entities_with_tag(:date)
   end
 end
