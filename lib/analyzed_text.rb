@@ -23,11 +23,15 @@ class AnalyzedText
   end
 
   def dates
-    @dates ||= time_mentions.map { |time_mention| @time_parser.get_dates(time_mention) }
+    @dates ||= time_mentions.map do |time_mention|
+      @time_parser.get_dates(time_mention)
+    end.compact
   end
 
   def date_ranges
-    @date_ranges ||= time_mentions.map { |time_mention| @time_parser.get_date_ranges(time_mention) }
+    @date_ranges ||= time_mentions.map do |time_mention|
+      @time_parser.get_date_ranges(time_mention)
+    end.compact
   end
 
   def named_entities_with_tag(tag)

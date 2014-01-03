@@ -36,34 +36,77 @@ describe AnalyzedText do
   end
 
   describe "time parser dates" do
-    before do
-      Timecop.freeze(Time.parse("2013-12-4 22:22:56"))
-      @analyzed_text = AnalyzedText.new(
-        "Arsenal vs Everton on Sunday is a really interesting game now.",
-        AnalyzedTextTest::MatchNER
-      )
-    end
+    describe "when dates exist" do
+      before do
+        Timecop.freeze(Time.parse("2013-12-4 22:22:56"))
+        @analyzed_text = AnalyzedText.new(
+          "Arsenal vs Everton on Sunday is a really interesting game now.",
+          AnalyzedTextTest::MatchNER
+        )
+      end
 
-    describe "#dates" do
-      it "must return dates identified by the time parser" do
-        @analyzed_text.dates.must_equal [
-          Time.parse("2013-12-08 12:00:00"), # sunday
-          Time.parse("2013-12-04 22:22:56")  # now
-        ]
+      describe "#dates" do
+        it "must return dates identified by the time parser" do
+          @analyzed_text.dates.must_equal [
+            Time.parse("2013-12-08 12:00:00"), # sunday
+            Time.parse("2013-12-04 22:22:56")  # now
+          ]
+        end
+      end
+
+      describe "#date_ranges" do
+        it "must return date ranges identified by the time parser" do
+          @analyzed_text.date_ranges.must_equal [
+            Time.parse("2013-12-08 00:00:00")..Time.parse("2013-12-09 00:00:00"), # sunday
+            Time.parse("2013-12-04 22:22:56")..Time.parse("2013-12-04 22:22:57")  # now
+          ]
+        end
+      end
+
+      after do
+        Timecop.return
       end
     end
 
-    describe "#date_ranges" do
-      it "must return date ranges identified by the time parser" do
-        @analyzed_text.date_ranges.must_equal [
-          Time.parse("2013-12-08 00:00:00")..Time.parse("2013-12-09 00:00:00"), # sunday
-          Time.parse("2013-12-04 22:22:56")..Time.parse("2013-12-04 22:22:57")  # now
-        ]
+    describe "when dates are detected by the ner but not by the time parser" do
+      before do
+        @analyzed_text = AnalyzedText.new(
+          "Match to be played on Wednesday 4th December 2...",
+          AnalyzedTextTest::DateNER)
+      end
+
+      describe "#dates" do
+        it "must be empty" do
+          @analyzed_text.dates.must_be_empty
+        end
+      end
+
+      describe "#date_ranges" do
+        it "must be empty" do
+          @analyzed_text.date_ranges.must_be_empty
+        end
       end
     end
 
-    after do
-      Timecop.return
+    describe "when no dates exist" do
+      before do
+        @analyzed_text = AnalyzedText.new(
+          "I've got nothing to say.",
+          AnalyzedTextTest::NothingNER
+        )
+      end
+
+      describe "#dates" do
+        it "must be empty" do
+          @analyzed_text.dates.must_be_empty
+        end
+      end
+
+      describe "#date_ranges" do
+        it "must be empty" do
+          @analyzed_text.date_ranges.must_be_empty
+        end
+      end
     end
   end
 end
@@ -78,6 +121,18 @@ module AnalyzedTextTest
   class MatchNER
     def self.recognize(text)
       [["Everton", "Sunday", "now"], [:organization, :date, :date]]
+    end
+  end
+
+  class DateNER
+    def self.recognize(text)
+      [["Wednesday 4th December 2"], [:date]]
+    end
+  end
+
+  class NothingNER
+    def self.recognize(text)
+      [[], []]
     end
   end
 end
