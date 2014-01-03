@@ -10,7 +10,7 @@ task :save_tweet_stream => :environment do
   twitter_client = TwitterClient.create
   twitter_client.filter do |tweet|
 
-    analyzed_text = AnalyzedText.new(tweet.text)
+    analyzed_text = AnalyzedText.new(tweet.text, tweet.created_at)
     if FootballFilter.new(analyzed_text).ok?
       if classifier.classify(tweet.text) == :match
         puts "#{tweet.text}\n#{tweet.uri}\n"

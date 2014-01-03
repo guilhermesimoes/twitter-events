@@ -6,6 +6,7 @@ describe AnalyzedText do
     before do
       @analyzed_text = AnalyzedText.new(
         "Angela Merkel and Nicolas Sarkozy are politicians",
+        Time.now,
         AnalyzedTextTest::PoliticiansNER
       )
     end
@@ -38,9 +39,9 @@ describe AnalyzedText do
   describe "time parser dates" do
     describe "when dates exist" do
       before do
-        Timecop.freeze(Time.parse("2013-12-4 22:22:56"))
         @analyzed_text = AnalyzedText.new(
           "Arsenal vs Everton on Sunday is a really interesting game now.",
+          Time.parse("2013-12-4 22:22:56"),
           AnalyzedTextTest::MatchNER
         )
       end
@@ -62,17 +63,15 @@ describe AnalyzedText do
           ]
         end
       end
-
-      after do
-        Timecop.return
-      end
     end
 
     describe "when dates are detected by the ner but not by the time parser" do
       before do
         @analyzed_text = AnalyzedText.new(
           "Match to be played on Wednesday 4th December 2...",
-          AnalyzedTextTest::DateNER)
+          Time.now,
+          AnalyzedTextTest::DateNER
+        )
       end
 
       describe "#dates" do
@@ -92,6 +91,7 @@ describe AnalyzedText do
       before do
         @analyzed_text = AnalyzedText.new(
           "I've got nothing to say.",
+          Time.now,
           AnalyzedTextTest::NothingNER
         )
       end

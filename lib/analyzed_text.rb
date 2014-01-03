@@ -1,13 +1,12 @@
 require "named_entity_recognizer"
-require "time_parser"
 
 class AnalyzedText
   attr_reader :text
 
-  def initialize(text, ner = NamedEntityRecognizer, time_parser = TimeParser)
+  def initialize(text, time_context = Time.now, ner = NamedEntityRecognizer)
     @text = text
+    @time_context = time_context
     @ner = ner
-    @time_parser = time_parser
   end
 
   def entities
@@ -24,13 +23,13 @@ class AnalyzedText
 
   def dates
     @dates ||= time_mentions.map do |time_mention|
-      @time_parser.get_dates(time_mention)
+      Chronic.parse(time_mention, :now => @time_context)
     end.compact
   end
 
   def date_ranges
     @date_ranges ||= time_mentions.map do |time_mention|
-      @time_parser.get_date_ranges(time_mention)
+      Chronic.parse(time_mention, :guess => false, :now => @time_context)
     end.compact
   end
 

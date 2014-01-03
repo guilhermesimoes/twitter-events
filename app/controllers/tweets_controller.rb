@@ -22,9 +22,9 @@ class TweetsController < ApplicationController
 
     twitter_client.filter do |tweet|
 
-      analyzed_text = AnalyzedText.new(tweet.text)
+      analyzed_text = AnalyzedText.new(tweet.text, tweet.created_at)
       if FootballFilter.new(analyzed_text).ok? && classifier.classify(tweet.text) == :match
-        tweet = TweetInitializer.init(tweet, analyzed_text, { :save => false })
+        tweet = TweetInitializer.init(tweet, analyzed_text)
         serialized_tweet = TweetSerializer.new(tweet)
         sse.write(serialized_tweet)
       else
