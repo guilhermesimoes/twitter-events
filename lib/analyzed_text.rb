@@ -7,6 +7,7 @@ class AnalyzedText
     @text = text
     @time_context = time_context
     @ner = ner
+    @named_entities_by_tag = {}
   end
 
   def entities
@@ -33,8 +34,10 @@ class AnalyzedText
     end.compact
   end
 
-  def named_entities_with_tag(tag)
-    named_entities.each_index.reduce([]) do |result, index|
+  def named_entities_by_tag(tag)
+    return @named_entities_by_tag[tag] unless @named_entities_by_tag[tag].nil?
+
+    @named_entities_by_tag[tag] = named_entities.each_index.reduce([]) do |result, index|
       result << named_entities[index] if tags[index] == tag
       result
     end
@@ -43,6 +46,6 @@ class AnalyzedText
   private
 
   def time_mentions
-    @time_mentions ||= named_entities_with_tag(:date)
+    named_entities_by_tag(:date)
   end
 end

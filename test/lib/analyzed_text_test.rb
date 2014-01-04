@@ -29,9 +29,9 @@ describe AnalyzedText do
       end
     end
 
-    describe "#named_entities_with_tag" do
+    describe "#named_entities_by_tag" do
       it "must return entities tagged with the given tag" do
-        @analyzed_text.named_entities_with_tag(:person).must_equal ["Angela Merkel", "Nicolas Sarkozy"]
+        @analyzed_text.named_entities_by_tag(:person).must_equal ["Angela Merkel", "Nicolas Sarkozy"]
       end
     end
   end
