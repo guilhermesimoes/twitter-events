@@ -1,7 +1,5 @@
 require "twitter_client"
 require "analyzed_text"
-require "football_filter"
-require "football_classifier_factory"
 
 desc "Fetches tweets from a stream and saves them to the database"
 task :save_tweet_stream => :environment do

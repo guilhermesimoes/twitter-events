@@ -1,7 +1,5 @@
 require "twitter_client"
 require "analyzed_text"
-require "football_filter"
-require "football_classifier_factory"
 require "sse"
 
 class TweetsController < ApplicationController

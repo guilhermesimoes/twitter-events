@@ -1,5 +1,4 @@
 require "test_helper"
-require "football_filter"
 
 describe FootballFilter do
   let(:filter) { FootballFilter }
