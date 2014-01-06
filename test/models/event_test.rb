@@ -1,6 +1,26 @@
 require "test_helper"
 
 describe Event do
+  describe "::where_started_at_overlaps" do
+    before do
+      Event.create(:started_at => Chronic.parse("today", :guess => false))
+    end
+
+    it "must not overlap with the end of the passed date (query dependent)" do
+      yesterday = Chronic.parse("yesterday", :guess => false)
+      Event.where_started_at_overlaps(yesterday).must_be_empty
+    end
+
+    it "must not overlap with the end of dates in the db (so ranges must be created with exclusive end)" do
+      tomorrow = Chronic.parse("tomorrow", :guess => false)
+      Event.where_started_at_overlaps(tomorrow).must_be_empty
+    end
+
+    after do
+      Event.destroy_all
+    end
+  end
+
   describe "#description" do
     describe "when it only has one actor" do
       it "must include it" do

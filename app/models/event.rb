@@ -3,7 +3,7 @@ class Event < ActiveRecord::Base
   has_many :tweets, :through => :references
 
   def self.where_started_at_overlaps(started_at)
-    where("started_at && ?", "[#{started_at.begin}, #{started_at.end}]")
+    where("started_at && ?", "[#{started_at.begin}, #{started_at.end})")
   end
 
   def to_s
@@ -19,7 +19,7 @@ class Event < ActiveRecord::Base
       end
       temp << " at #{locations.join(', ')}" unless locations.blank?
       temp << " between #{started_at.begin.to_formatted_s(:long_ordinal)} \
-        and #{started_at.end.to_formatted_s(:long_ordinal)}" unless started_at.blank?
+and #{started_at.end.to_formatted_s(:long_ordinal)}" unless started_at.blank?
       temp << "."
       temp
     end

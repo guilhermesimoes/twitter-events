@@ -58,8 +58,8 @@ describe AnalyzedText do
       describe "#date_ranges" do
         it "must return date ranges identified by the time parser" do
           @analyzed_text.date_ranges.must_equal [
-            Time.parse("2013-12-08 00:00:00")..Time.parse("2013-12-09 00:00:00"), # sunday
-            Time.parse("2013-12-04 22:22:56")..Time.parse("2013-12-04 22:22:57")  # now
+            Time.parse("2013-12-08 00:00:00")...Time.parse("2013-12-09 00:00:00"), # sunday
+            Time.parse("2013-12-04 22:22:56")...Time.parse("2013-12-04 22:22:57")  # now
           ]
         end
       end
