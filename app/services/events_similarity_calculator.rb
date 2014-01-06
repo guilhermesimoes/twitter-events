@@ -29,26 +29,22 @@ class EventsSimilarityCalculator
     r1, r2 = @e1.started_at, @e2.started_at
     return 0 if r1.nil? || r2.nil?
 
-    days_in_range(ranges_intersection(r1, r2)).to_f / days_in_range(ranges_union(r1, r2))
+    days_in_intersection(r1, r2).to_f / days_in_union(r1, r2)
   end
 
-  def ranges_intersection(r1, r2)
-    new_begin = [r1.begin, r2.begin].max
-    new_end = [r1.end, r2.end].min
-    exclude_end = (new_end == r1.end && r1.exclude_end?) || (new_end == r2.end && r2.exclude_end?)
-
-    Range.new(new_begin, new_end, exclude_end)
+  def days_in_intersection(r1, r2)
+    intersection_begin = [r1.begin, r2.begin].max
+    intersection_end = [r1.end, r2.end].min
+    days_between_dates(intersection_begin, intersection_end)
   end
 
-  def ranges_union(r1, r2)
-    new_begin = [r1.begin, r2.begin].min
-    new_end = [r1.end, r2.end].max
-    exclude_end = (new_end == r1.end) ? r1.exclude_end? : r2.exclude_end?
-
-    Range.new(new_begin, new_end, exclude_end)
+  def days_in_union(r1, r2)
+    union_begin = [r1.begin, r2.begin].min
+    union_end = [r1.end, r2.end].max
+    days_between_dates(union_begin, union_end)
   end
 
-  def days_in_range(range)
-    ((range.last - range.first) / 1.day).ceil
+  def days_between_dates(date1, date2)
+    ((date2 - date1) / 1.day).ceil
   end
 end
