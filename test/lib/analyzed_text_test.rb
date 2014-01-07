@@ -37,11 +37,11 @@ describe AnalyzedText do
   end
 
   describe "time parser dates" do
-    describe "when dates exist" do
+    describe "when date references exist" do
       before do
         @analyzed_text = AnalyzedText.new(
           "Arsenal vs Everton on Sunday is a really interesting game now.",
-          Time.parse("2013-12-4 22:22:56"),
+          Time.parse("2013-12-04 22:22:56"),   # now
           AnalyzedTextTest::MatchNER
         )
       end
@@ -65,7 +65,33 @@ describe AnalyzedText do
       end
     end
 
-    describe "when dates are detected by the ner but not by the time parser" do
+    describe "when duplicate date references exist" do
+      before do
+        @analyzed_text = AnalyzedText.new(
+          "Today is gonna be awesome. Today I'm going to the ball game.",
+          Time.parse("2014-01-01"),
+          AnalyzedTextTest::DuplicateDatesNer
+        )
+      end
+
+      describe "#dates" do
+        it "must return unique dates identified by the time parser without" do
+          @analyzed_text.dates.must_equal [
+            Time.parse("2014-01-01 12:00:00")
+          ]
+        end
+      end
+
+      describe "#date_ranges" do
+        it "must return unique date ranges identified by the time parser" do
+          @analyzed_text.date_ranges.must_equal [
+            Time.parse("2014-01-01")...Time.parse("2014-01-02")
+          ]
+        end
+      end
+    end
+
+    describe "when date references are detected by the ner but not by the time parser" do
       before do
         @analyzed_text = AnalyzedText.new(
           "Match to be played on Wednesday 4th December 2...",
@@ -127,6 +153,12 @@ module AnalyzedTextTest
   class DateNER
     def self.recognize(text)
       [["Wednesday 4th December 2"], [:date]]
+    end
+  end
+
+  class DuplicateDatesNer
+    def self.recognize(text)
+      [["today", "today"], [:date, :date]]
     end
   end
 

@@ -23,15 +23,11 @@ class AnalyzedText
   end
 
   def dates
-    @dates ||= time_mentions.map do |time_mention|
-      Chronic.parse(time_mention, :now => @time_context)
-    end.compact
+    @dates ||= time_mentions
   end
 
   def date_ranges
-    @date_ranges ||= time_mentions.map do |time_mention|
-      Chronic.parse(time_mention, :guess => false, :now => @time_context)
-    end.compact
+    @date_ranges ||= time_mentions(:range => true)
   end
 
   def named_entities_by_tag(tag)
@@ -45,7 +41,12 @@ class AnalyzedText
 
   private
 
-  def time_mentions
-    named_entities_by_tag(:date)
+  def time_mentions(opts = {})
+    time_mentions = named_entities_by_tag(:date).map do |time_mention|
+      Chronic.parse(time_mention, :now => @time_context, :guess => !opts[:range])
+    end
+    time_mentions.compact!
+    time_mentions.uniq!
+    time_mentions
   end
 end
