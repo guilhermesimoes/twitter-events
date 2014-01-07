@@ -14,6 +14,34 @@ describe EventsSimilarityCalculator do
       calculator.new(e1, e2).similar?.must_equal true
     end
 
+    it "must return true when teams match and time periods overlap but do not exactly match" do
+      # @JasunPotter are you going 2 the Newcastle game on Saturday?
+      e1 = Event.new(
+        :started_at => "[2013-12-07T00:00:00,2013-12-08T00:00:00)",
+        :actors => ["Newcastle"]
+      )
+      # @Persie_Official is RVP fit for Newcastle game this weekend
+      e2 = Event.new(
+        :started_at => "[2013-12-07T00:00:00,2013-12-09T00:00:00)",
+        :actors => ["Newcastle"]
+      )
+      calculator.new(e1, e2).similar?.must_equal true
+    end
+
+    it "must return true when there is one team in common (out of two) and the time periods overlap but do not exactly match" do
+      # Going Fulham v Manchester City game this weekend and Aguero gets injured... My luck is poor
+      e1 = Event.new(
+        :started_at => "[2013-12-21T00:00:00,2013-12-23T00:00:00)",
+        :actors => ["Fulham", "Manchester City"]
+      )
+      # Rather excited for Fulham away on Saturday. Negredo hat trick.
+      e2 = Event.new(
+        :started_at => "[2013-12-21T00:00:00,2013-12-22T00:00:00)",
+        :actors => ["Fulham"]
+      )
+      calculator.new(e1, e2).similar?.must_equal true
+    end
+
     it "must return true when there is one team in common (out of two) and the time periods are close" do
       # Anyone know a site I can stream football on this afternoon? Wanna see the Liverpool game!
       e1 = Event.new(
@@ -66,6 +94,20 @@ describe EventsSimilarityCalculator do
       e2 = Event.new(
         :started_at => "[2013-12-22T00:00:00+00:00,2013-12-23T00:00:00+00:00)",
         :actors => ["Liverpool", "Cardiff"]
+      )
+      calculator.new(e1, e2).similar?.must_equal false
+    end
+
+    it "must return false when there is only one team in common (out of three) and the time periods overlap" do
+      # Going to the Chelsea vs Swansea match next week
+      e1 = Event.new(
+        :started_at => "[2013-12-22T00:00:00,2013-12-29T00:00:00)",
+        :actors => ["Chelsea", "Swansea"]
+      )
+      # Can't wait for the Arsenal vs Chelsea next week!
+      e2 = Event.new(
+        :started_at => "[2013-12-22T00:00:00,2013-12-29T00:00:00)",
+        :actors => ["Arsenal", "Chelsea"]
       )
       calculator.new(e1, e2).similar?.must_equal false
     end

@@ -1,5 +1,5 @@
 class EventsSimilarityCalculator
-  THRESHOLD = 0.6
+  THRESHOLD = 0.55
 
   def initialize(e1, e2)
     @e1, @e2 = e1, e2
@@ -10,14 +10,14 @@ class EventsSimilarityCalculator
   end
 
   def similarity
-    0.5 * similar_actors? + 0.1 * similar_locations? + 0.4 * similar_started_ats?
+    0.48 * similar_actors? + 0.1 * similar_locations? + 0.42 * similar_started_ats?
   end
 
   private
 
   def similar_actors?
     result = (@e1.actors & @e2.actors).length.to_f / (@e1.actors | @e2.actors).length
-    result.nan? ? 0 : result
+    result.nan? ? 0 : result ** 1.2
   end
 
   def similar_locations?
@@ -29,7 +29,7 @@ class EventsSimilarityCalculator
     r1, r2 = @e1.started_at, @e2.started_at
     return 0 if r1.nil? || r2.nil?
 
-    days_in_intersection(r1, r2).to_f / days_in_union(r1, r2)
+    (days_in_intersection(r1, r2).to_f / days_in_union(r1, r2)) ** 0.3
   end
 
   def days_in_intersection(r1, r2)
