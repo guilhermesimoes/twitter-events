@@ -11,19 +11,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131217150000) do
+ActiveRecord::Schema.define(version: 20140120230502) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "hstore"
 
   create_table "events", force: true do |t|
     t.tstzrange "started_at"
     t.tstzrange "finished_at"
-    t.string    "locations",        default: [], array: true
-    t.string    "actors",           default: [], array: true
     t.string    "description"
     t.string    "category"
     t.integer   "references_count", default: 0
+    t.hstore    "locations",        default: {}
+    t.hstore    "actors",           default: {}
   end
 
   add_index "events", ["finished_at"], name: "index_events_on_finished_at", using: :gist

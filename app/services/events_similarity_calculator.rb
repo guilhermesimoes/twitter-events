@@ -16,12 +16,12 @@ class EventsSimilarityCalculator
   private
 
   def similar_actors?
-    result = (@e1.actors & @e2.actors).length.to_f / (@e1.actors | @e2.actors).length
+    result = (e1actors & e2actors).length.to_f / (e1actors | e2actors).length
     result.nan? ? 0 : result ** 1.2
   end
 
   def similar_locations?
-    result = (@e1.locations & @e2.locations).length.to_f / (@e1.locations | @e2.locations).length
+    result = (e1locations & e2locations).length.to_f / (e1locations | e2locations).length
     result.nan? ? 0 : result
   end
 
@@ -46,5 +46,21 @@ class EventsSimilarityCalculator
 
   def days_between_dates(date1, date2)
     ((date2 - date1) / 1.day).ceil
+  end
+
+  def e1actors
+    @e1actors ||= @e1.actors.keys
+  end
+
+  def e2actors
+    @e2actors ||= @e2.actors.keys
+  end
+
+  def e1locations
+    @e1locations ||= @e1.locations.keys
+  end
+
+  def e2locations
+    @e2locations ||= @e2.locations.keys
   end
 end
