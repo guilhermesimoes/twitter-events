@@ -18,11 +18,12 @@ class NamedEntityRecognizer
   end
 
   ##
-  # Iterates the +tokens+ and returns an array of arrays.
-  # The first array contains named entities and the second
-  # contains their respective tags.
+  # Iterates the +tokens+ and returns a hash of named entities as keys
+  # and their respective tags as values.
   #
-  # Also joins multi-term named entities.
+  # Multi-term named entities are joined.
+  #
+  # Duplicate named entities are removed.
   #
   # For example, the following strings, after tokenization and annotation:
   #
@@ -32,13 +33,12 @@ class NamedEntityRecognizer
   #
   # Will return:
   #
-  # 1. [["Alice", "Bob", "Eve"], [:person, :person, :person]]
+  # 1. { "Alice" => :person, "Bob" => :person, "Eve" => :person }
   #
-  # 2. [["John Smith"], [:person]]
+  # 2. { "John Smith" => :person }
 
   def self.get_named_entities_and_tags(tokens)
-    named_entities = []
-    tags = []
+    nets = []
     last_tag = nil
     tokens.each do |token|
       tag = token.get(:named_entity_tag).to_s.downcase.to_sym
@@ -48,13 +48,12 @@ class NamedEntityRecognizer
       end
 
       if tag == last_tag
-        named_entities.last << " " << token.get(:original_text).to_s
+        nets.last[0] << " " << token.get(:original_text).to_s
       else
         last_tag = tag
-        named_entities << token.get(:original_text).to_s
-        tags << tag
+        nets << [token.get(:original_text).to_s, tag]
       end
     end
-    [named_entities, tags]
+    nets.to_h
   end
 end
