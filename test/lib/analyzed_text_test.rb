@@ -13,7 +13,7 @@ describe AnalyzedText do
 
     describe "#entities" do
       it "must return named entities and tags identified by the ner" do
-        @analyzed_text.entities.must_equal [["Angela Merkel", "Nicolas Sarkozy"], [:person, :person]]
+        @analyzed_text.entities.must_equal({ "Angela Merkel" => :person, "Nicolas Sarkozy" => :person })
       end
     end
 
@@ -140,31 +140,31 @@ end
 module AnalyzedTextTest
   class PoliticiansNER
     def self.recognize(text)
-      [["Angela Merkel", "Nicolas Sarkozy"], [:person, :person]]
+      { "Angela Merkel" => :person, "Nicolas Sarkozy" => :person }
     end
   end
 
   class MatchNER
     def self.recognize(text)
-      [["Everton", "Sunday", "now"], [:organization, :date, :date]]
+      { "Everton" => :organization, "Sunday" => :date, "now" => :date }
     end
   end
 
   class DateNER
     def self.recognize(text)
-      [["Wednesday 4th December 2"], [:date]]
+      { "Wednesday 4th December 2" => :date }
     end
   end
 
   class DuplicateDatesNer
     def self.recognize(text)
-      [["today", "today"], [:date, :date]]
+      { "today" => :date, "today" => :date }
     end
   end
 
   class NothingNER
     def self.recognize(text)
-      [[], []]
+      {}
     end
   end
 end

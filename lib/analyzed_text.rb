@@ -15,11 +15,11 @@ class AnalyzedText
   end
 
   def named_entities
-    @named_entities ||= entities[0]
+    @named_entities ||= entities.keys
   end
 
   def tags
-    @tags ||= entities[1]
+    @tags ||= entities.values
   end
 
   def dates
@@ -32,11 +32,7 @@ class AnalyzedText
 
   def named_entities_by_tag(tag)
     return @named_entities_by_tag[tag] unless @named_entities_by_tag[tag].nil?
-
-    @named_entities_by_tag[tag] = named_entities.each_index.reduce([]) do |result, index|
-      result << named_entities[index] if tags[index] == tag
-      result
-    end
+    @named_entities_by_tag[tag] = entities.map { |k, v| v == tag ? k : nil }.compact
   end
 
   private
