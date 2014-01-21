@@ -7,21 +7,20 @@ class Event < ActiveRecord::Base
   end
 
   def to_s
-    @string_representation ||= begin
-      temp = ""
-      case actors.length
-      when 0
-        temp << "There will be some match"
-      when 1
-        temp << "#{actors[0]} will play"
-      when 2
-        temp << "#{actors[0]} will play against #{actors[1]}"
-      end
-      temp << " at #{locations.join(', ')}" unless locations.blank?
-      temp << " between #{started_at.begin.to_formatted_s(:long_ordinal)} \
-and #{started_at.end.to_formatted_s(:long_ordinal)}" unless started_at.blank?
-      temp << "."
-      temp
+    temp = ""
+    case actors.keys.length
+    when 0
+      temp << "There will be some match"
+    when 1
+      temp << "#{actors.keys.first} will play"
+    else
+      sorted_actores = actors.sort_by { |_key, value| value }
+      temp << "#{sorted_actores[-1][0]} will play against #{sorted_actores[-2][0]}"
     end
+    temp << " at #{locations.keys.join(', ')}" unless locations.empty?
+    temp << " between #{started_at.begin.to_formatted_s(:long_ordinal)} \
+and #{started_at.end.to_formatted_s(:long_ordinal)}" unless started_at.blank?
+    temp << "."
+    temp
   end
 end

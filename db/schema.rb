@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140120230502) do
+ActiveRecord::Schema.define(version: 20140120231838) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -44,6 +44,7 @@ ActiveRecord::Schema.define(version: 20140120230502) do
   end
 
   add_index "references", ["event_id"], name: "index_references_on_event_id", using: :btree
+  add_index "references", ["tweet_id", "event_id"], name: "index_references_on_tweet_id_and_event_id", unique: true, using: :btree
   add_index "references", ["tweet_id"], name: "index_references_on_tweet_id", using: :btree
 
   create_table "tweets", force: true do |t|

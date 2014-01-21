@@ -8,5 +8,7 @@ TwitterEvents::Application.routes.draw do
 
   resources :tweets, :only => :index
 
+  resources :events, :only => :show
+
   get 'tweets/stream' => 'tweets#stream'
 end

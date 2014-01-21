@@ -75,12 +75,20 @@ body {
   margin: 0;
 }
 
-.stream {
-  max-width: 620px;
+.streams {
   margin: 20px auto 220px auto;
 }
 
-.tweets {
+.column {
+  float: left;
+  width: 33%;
+}
+
+.container {
+  padding: 0 10px;
+}
+
+.list {
   padding: 0;
   margin: 0;
   list-style-type: none;
@@ -89,7 +97,7 @@ body {
   border-color: #999;
 }
 
-.tweet {
+.tweet, .event {
   padding: 12px;
   background-color: white;
   border-bottom: 1px solid #999;

@@ -7,6 +7,8 @@ class FootballFilter
     first\ half|second\ half|final\ whistle
   )s?\b/ix.freeze
 
+  # :number, :ordinal, :cardinal, :quantity, :money, :percent, :o
+
   def initialize(analysed_text)
     @text = analysed_text.text
     @tags = analysed_text.tags

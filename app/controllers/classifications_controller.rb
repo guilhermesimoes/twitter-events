@@ -1,7 +1,8 @@
 class ClassificationsController < ApplicationController
 
   def new
-    tweet = Tweet.where("category IS NULL").order("RANDOM()").first
+    # tweet = Tweet.where("category IS NULL").all_tags(:date, :location).order("RANDOM()").first
+    tweet = Tweet.where(:category => "matched").order("created_at ASC").first
     render json: tweet
   end
 

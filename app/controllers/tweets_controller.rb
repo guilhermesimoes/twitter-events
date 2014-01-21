@@ -22,15 +22,19 @@ class TweetsController < ApplicationController
 
       analyzed_text = AnalyzedText.new(tweet.text, tweet.created_at)
       if FootballFilter.new(analyzed_text).ok? && classifier.classify(tweet.text) == :match
-        tweet = TweetInitializer.init(tweet, analyzed_text)
+        tweet = TweetInitializer.init(tweet, analyzed_text, :save => true)
         serialized_tweet = TweetSerializer.new(tweet)
-        sse.write(serialized_tweet)
-      else
-        if analyzed_text.tags.size > 1
-          puts "NOPE: #{tweet.text}\n"
-        else
-          puts "."
+        sse.write(serialized_tweet, :event => "tweet")
+
+        events = EventsCreator.new(tweet, analyzed_text).execute
+        if events
+          events.each do |event|
+            serialized_event = EventSerializer.new(event)
+            sse.write(serialized_event, :event => "event")
+          end
         end
+      else
+        puts "."
       end
     end
   rescue IOError

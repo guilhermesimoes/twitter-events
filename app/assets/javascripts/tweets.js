@@ -6,10 +6,13 @@ TwitterEvents.tweets = {
     },
 
     settings: {
-        container: document.getElementById("js-tweets"),
+        tweetContainer: document.getElementById("js-tweets"),
+        eventsContainer: document.getElementById("js-events"),
+        eventTweetsContainer: document.getElementById("js-event-tweets"),
         streamEnd: document.getElementById("js-stream-end"),
         dummyNode: document.createElement("div"),
-        template: Handlebars.compile(document.getElementById("tweet-template").innerHTML),
+        tweetTemplate: Handlebars.compile(document.getElementById("tweet-template").innerHTML),
+        eventTemplate: Handlebars.compile(document.getElementById("event-template").innerHTML),
         searchForm: document.getElementById("js-search-form"),
         searchPage: document.getElementById("js-search-page"),
         startButton: document.getElementById("js-start-stream"),
@@ -63,48 +66,86 @@ TwitterEvents.tweets = {
         .on("ajax:success", function() {
             TwitterEvents.tweets.newClassification();
         });
+        $("#js-events")
+        .on("click", ".event", function() {
+            $.ajax({
+                type: "GET",
+                dataType: "json",
+                url: "/events/" + this.getAttribute("data-id")
+            }).success(function(data, status, xhr){
+                TwitterEvents.tweets.renderEventTweets(data.event.tweets);
+            });
+        })
     },
 
     hideUIElements: function() {
-        this.settings.container.style.display = "none";
+        this.settings.tweetContainer.style.display = "none";
         this.settings.streamEnd.style.display = "none";
         this.settings.classificationGroup.style.display = "none";
+        this.settings.eventsContainer.style.display = "none";
+        this.settings.eventTweetsContainer.style.display = "none";
     },
 
     startStream: function() {
         this.hideUIElements();
-        this.settings.container.innerHTML = "";
-        this.settings.container.style.display = "block";
+        this.settings.tweetContainer.innerHTML = "";
+        this.settings.tweetContainer.style.display = "block";
+        this.settings.eventsContainer.innerHTML = "";
+        this.settings.eventsContainer.style.display = "block";
         this.state.source = new EventSource("/tweets/stream");
-        this.state.source.addEventListener("message", this.renderStream);
+        this.state.source.addEventListener("tweet", this.renderTweetsStream);
+        this.state.source.addEventListener("event", this.renderEventsStream);
     },
 
-    renderStream: function(event) {
+    renderTweetsStream: function(event) {
         var data = JSON.parse(event.data),
-            container = TwitterEvents.tweets.settings.container,
-            newNode = TwitterEvents.tweets.settings.template(data.tweet);
+            container = TwitterEvents.tweets.settings.tweetContainer,
+            newNode = TwitterEvents.tweets.settings.tweetTemplate(data.tweet);
 
         $(container).prepend(newNode);
+    },
+
+    renderEventsStream: function(event) {
+        var data = JSON.parse(event.data),
+            container = TwitterEvents.tweets.settings.eventsContainer,
+            newNode = TwitterEvents.tweets.settings.eventTemplate(data.event);
+        console.log(data);
+
+        $(container).prepend(newNode);
+    },
+
+    renderEventTweets: function(tweets) {
+        var tweet,
+            newNode,
+            container = TwitterEvents.tweets.settings.eventTweetsContainer;
+
+        container.innerHTML = "";
+        container.style.display = "block";
+
+        $.each(tweets, function(index, tweet) {
+            newNode = TwitterEvents.tweets.settings.tweetTemplate(tweet);
+            $(container).prepend(newNode);
+        });
     },
 
     stopStream: function() {
         var source = this.state.source;
         if (source !== null) {
             source.close();
-            source.removeEventListener("message", this.renderStream);
+            source.removeEventListener("tweet", this.renderTweetsStream);
             this.state.source = null;
         }
     },
 
     startClassification: function() {
         this.hideUIElements();
-        this.settings.container.innerHTML = "";
-        this.settings.container.style.display = "block";
+        this.settings.tweetContainer.innerHTML = "";
+        this.settings.tweetContainer.style.display = "block";
         this.settings.classificationGroup.style.display = "block";
 
         $.ajax({
             type: "GET",
-            dataType: 'json',
+            dataType: "json",
             url: "/classifications/new",
             success: function(data, status, xhr) {
                 TwitterEvents.tweets.renderClassification(data.tweet);
@@ -113,8 +154,8 @@ TwitterEvents.tweets = {
     },
 
     renderClassification: function(tweet) {
-        var container = this.settings.container,
-            newNode = this.settings.template(tweet);
+        var container = this.settings.tweetContainer,
+            newNode = this.settings.tweetTemplate(tweet);
 
         this.settings.classificationTweetId.value = tweet.id;
         this.settings.container.innerHTML = "";
@@ -135,13 +176,13 @@ TwitterEvents.tweets = {
             this.settings.searchPage.value = 1;
             this.settings.last_page = false;
             this.hideUIElements();
-            this.settings.container.innerHTML = "";
-            this.settings.container.style.display = "block";
+            this.settings.tweetContainer.innerHTML = "";
+            this.settings.tweetContainer.style.display = "block";
         }
     },
 
     renderSearch: function(data) {
-        var container = this.settings.container,
+        var container = this.settings.tweetContainer,
             newNodes = "",
             tweets = data.tweets;
 
@@ -154,7 +195,7 @@ TwitterEvents.tweets = {
         }
 
         for (var i = 0, length = tweets.length; i < length; i++) {
-            newNodes += this.settings.template(tweets[i]);
+            newNodes += this.settings.tweetTemplate(tweets[i]);
         }
         $(container).append(newNodes);
     },
